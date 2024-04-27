@@ -1,0 +1,1 @@
+protoc --decode rv.data.Presentation propresenter.proto < filename > output_folder\filename.txt
