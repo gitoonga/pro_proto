@@ -1,49 +1,85 @@
-**ProPresenter Proto Compiler and Decoder**
-==========================================
+# ProPresenter 7 Batch Reformatter
 
-This repository contains two Python scripts that automate the compilation and decoding of Proto files for ProPresenter.
+A Python-based automation tool designed to standardize and reformat ProPresenter 7 song files (`.pro`) at scale. This tool is particularly useful for cleaning up large libraries (1000+ songs) to ensure consistent typography, slide length, and layout.
 
-**Compilation Script**
----------------------
+## 🚀 Key Features
 
-The first script compiles `.proto` files in the `proto` folder and generates Python output in the `buff_compiler` folder.
+- **Automatic Slide Re-segmentation**: Automatically splits song lyrics into slides with a maximum of **2 lines per slide**, ensuring optimal readability.
+- **Consistent Typography**: Applies a standardized RTF-based format (White text, Center Aligned, Arial Black, 40pt) to all slides.
+- **Bulk Processing**: Processes all `.pro` files in an input directory and outputs them to a designated folder.
+- **Structure Preservation**: Maintains original song components including **Groups** (Verse, Chorus, Bridge, etc.) and **Arrangements**.
+- **Background Cleanup**: Strips existing media actions/backgrounds from slides to provide a clean slate for new visual themes.
+- **Protobuf Driven**: Uses ProPresenter 7's native Protocol Buffer format for high-fidelity file manipulation.
 
-**Usage**
+## 🛠️ Prerequisites
 
-1. Place your `.proto` files in the `proto` folder.
-2. Run the script to compile the files.
-3. The compiled Python files will be generated in the `buff_compiler` folder.
+- **Python 3.8 or higher**
+- `pip` (Python package installer)
 
-**Decoding Script**
------------------
+## 📥 Installation
 
-The second script decodes `.pro` files in the `test_files` folder and generates text output in the `txt_output` folder.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/gitoonga/pro_proto.git
+   cd pro_proto
+   ```
 
-**Usage**
+2. **Setup the Virtual Environment**:
+   - **Windows (PowerShell)**:
+     ```powershell
+     .\setup_venv.ps1
+     ```
+   - **Windows (CMD)**:
+     ```cmd
+     setup_venv.bat
+     ```
 
-1. Place your `.pro` files in the `test_files` folder.
-2. Run the script to decode the files.
-3. The decoded text files will be generated in the `txt_output` folder.
+3. **Activate the environment**:
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
 
-**Requirements**
----------------
+## 📖 Usage
 
-* Python 3.x
-* `protoc` compiler installed on your system
+### Basic Usage (using default folders)
+1. **Prepare Input Files**: Place the `.pro` files you want to reformat into the `test_files/` directory.
+2. **Run the Script**:
+   ```bash
+   python batch_reformat.py
+   ```
+3. **Retrieve Results**: The reformatted files will be generated in the `output_files/` directory.
 
-**Running the Scripts**
----------------------
+### Advanced Usage (custom paths)
+You can specify custom input and output directories using command-line arguments:
+```bash
+python batch_reformat.py --input "C:\Path\To\My\Songs" --output "C:\Path\To\Output"
+```
+Or using short flags:
+```bash
+python batch_reformat.py -i "C:\Path\To\My\Songs" -o "C:\Path\To\Output"
+```
 
-1. Open a terminal or command prompt.
-2. Navigate to the repository folder.
-3. Run the script using `python script_name.py` (replace `script_name.py` with the name of the script you want to run).
+## ⚙️ Customization
 
-**Troubleshooting**
------------------
+You can easily customize the formatting by editing the `SETTINGS` block in `batch_reformat.py`:
 
-If you encounter any issues, check the script output for error messages. Make sure you have the `protoc` compiler installed and configured correctly.
+```python
+# batch_reformat.py
 
-**License**
--------
+# Formatting Settings
+font_name = "Arial-Black"
+font_size = 80  # Half-points (e.g., 80 = 40pt)
+max_lines = 2   # Maximum lines per slide
+```
 
-This repository is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+## 📂 Project Structure
+
+- `batch_reformat.py`: The main automation script.
+- `ProPresenter7-Proto/`: Contains the protobuf definitions and generated Python classes.
+- `test_files/`: Input directory for original `.pro` files.
+- `output_files/`: Output directory for processed files.
+- `requirements.txt`: Python dependencies (`protobuf`, `striprtf`).
+
+## 📜 License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

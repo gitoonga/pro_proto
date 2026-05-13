@@ -1,5 +1,6 @@
 import sys
 import os
+import argparse
 import uuid
 import re
 from striprtf.striprtf import rtf_to_text
@@ -183,12 +184,25 @@ def process_presentation(input_path, output_path):
     except Exception as e:
         print(f"  Error saving: {e}")
 
-
 def main():
-    # SETTINGS
-    input_dir = r"d:\python\pro_proto\test_files"
-    output_dir = r"d:\python\pro_proto\output_files"
+    parser = argparse.ArgumentParser(description="Batch reformat ProPresenter 7 files.")
+    parser.add_argument(
+        "-i", "--input", 
+        default=os.path.join(os.getcwd(), "test_files"),
+        help="Directory containing .pro files to process (default: test_files/)"
+    )
+    parser.add_argument(
+        "-o", "--output", 
+        default=os.path.join(os.getcwd(), "output_files"),
+        help="Directory to save reformatted files (default: output_files/)"
+    )
+    
+    args = parser.parse_args()
+    
+    input_dir = args.input
+    output_dir = args.output
 
+    # SETTINGS
     # Set this to a path if you want a specific background applied to the first slide of every song
     # Example: r"C:\Users\Admin\Documents\ProPresenter\Media\Backgrounds\BlueMotion.mp4"
     standard_background_path = None
@@ -201,8 +215,16 @@ def main():
         print(f"Input directory not found: {input_dir}")
         return
 
+    if not os.path.isdir(input_dir):
+        print(f"Input path is not a directory: {input_dir}")
+        return
+
     files = [f for f in os.listdir(input_dir) if f.endswith(".pro")]
-    print(f"Found {len(files)} files to process.")
+    print(f"Found {len(files)} files in '{input_dir}' to process.")
+
+    if not files:
+        print("No .pro files found.")
+        return
 
     for filename in files:
         input_path = os.path.join(input_dir, filename)
